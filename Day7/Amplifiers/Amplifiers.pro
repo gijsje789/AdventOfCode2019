@@ -4,4 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    intcodecomputer.cpp \
+    miscellaneous.cpp
+
+HEADERS += \
+    intcodecomputer.h \
+    miscellaneous.h
