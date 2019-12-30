@@ -1,12 +1,18 @@
 #include "intcodecomputer.h"
 
-IntcodeComputer::IntcodeComputer()
+IntcodeComputer::IntcodeComputer(std::string _name)
+    :Name(_name)
 {
 
 }
 
-IntcodeComputer::IntcodeComputer(std::vector<int> _intCodes)
-    :IntCodes(_intCodes)
+IntcodeComputer::IntcodeComputer(std::string _name, std::vector<int> _intCodes)
+    : Name(_name), IntCodes(_intCodes)
+{
+
+}
+
+IntcodeComputer::~IntcodeComputer()
 {
 
 }
@@ -29,32 +35,41 @@ bool IntcodeComputer::ReadIntCodesFromFile(std::string _file)
     }
 }
 
-void IntcodeComputer::StartProgram()
+void IntcodeComputer::StartProgram(void)
 {
     Program = std::thread(&IntcodeComputer::IntcodeProgram, this);
 }
 
-void IntcodeComputer::WaitForProgramFinished()
+void IntcodeComputer::WaitForProgramFinished(void)
 {
     if(Program.joinable()) {
         Program.join();
     }
 }
 
-void IntcodeComputer::IntcodeProgram()
+std::vector<int> IntcodeComputer::GetIntcode()
+{
+    return IntCodes;
+}
+
+void IntcodeComputer::SetIntcode(std::vector<int> _intCodes)
+{
+    IntCodes = _intCodes;
+}
+
+void IntcodeComputer::IntcodeProgram(void)
 {
     while(ExecuteCurrentInstruction()) {
 
     }
 }
 
-int IntcodeComputer::ExecuteCurrentInstruction()
+int IntcodeComputer::ExecuteCurrentInstruction(void)
 {
-    int param_1; // first after op_code etc.
-    int param_2; // second after op_code etc.
-    int param_3; // where to write to.
+    int param_1 = 0; // first after op_code etc.
+    int param_2 = 0; // second after op_code etc.
+    int param_3 = 0; // where to write to.
 
-    int ID;
     int rval = 1;
 
     std::string instruction = Miscellaneous::Make5DigitString(IntCodes.at(CurrentInstruction));
@@ -78,9 +93,7 @@ int IntcodeComputer::ExecuteCurrentInstruction()
         break;
 
     case 3:
-        std::cout << "Please provide the system's ID: ";
-        std::cin >> ID;
-        param_1 = ID;
+        param_1 = GetInput();
         param_3 = IsParameterInPositionMode(instruction[0]) ? IntCodes.at(CurrentInstruction+1) : IntCodes.at(CurrentInstruction+1);        // position mode : position mode
         IntCodes.at(static_cast<size_t>(param_3)) = param_1;
         CurrentInstruction += 2;
@@ -88,7 +101,7 @@ int IntcodeComputer::ExecuteCurrentInstruction()
 
     case 4:
         param_1 = IsParameterInPositionMode(instruction[2]) ? IntCodes.at(static_cast<size_t>(IntCodes.at(CurrentInstruction+1))) : IntCodes.at(CurrentInstruction+1); // position mode : immediate mode
-        std::cout << param_1 << std::endl;
+        SetOutput(param_1);
         CurrentInstruction += 2;
         break;
 
@@ -141,3 +154,15 @@ bool IntcodeComputer::IsParameterInPositionMode(char ParamMode)
 {
     return (ParamMode - '0' == 0);
 }
+
+int IntcodeComputer::GetInput(void)
+{
+    return Miscellaneous::GetIntegerFromUser("IntcodeComputer " + Name + " wants an integer: ");;
+}
+
+void IntcodeComputer::SetOutput(int val)
+{
+    Miscellaneous::PrintToScreen(std::to_string(val));
+}
+
+

@@ -6,8 +6,10 @@ CONFIG -= qt
 SOURCES += \
         main.cpp \
     intcodecomputer.cpp \
-    miscellaneous.cpp
+    miscellaneous.cpp \
+    amplifier.cpp
 
 HEADERS += \
     intcodecomputer.h \
-    miscellaneous.h
+    miscellaneous.h \
+    amplifier.h
