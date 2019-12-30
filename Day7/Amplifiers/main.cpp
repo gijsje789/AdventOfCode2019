@@ -18,7 +18,7 @@ bool IsPhaseSettingValid(int phase_setting) {
     phases = Make5Digit(phases);
 
     for(size_t i = 0; i < phases.size(); i++) {
-        if(phases.at(i)-'0' > 4) return false;
+        if(phases.at(i)-'0' < 5) return false;
         for(size_t j = 0; j < phases.size(); j++) {
             if(i != j) {
                 if(phases.at(i) == phases.at(j)) {
@@ -29,6 +29,7 @@ bool IsPhaseSettingValid(int phase_setting) {
     }
     return true;
 }
+
 int main()
 {
     Amplifier initAmp("Amplifier A", 0);
@@ -36,7 +37,7 @@ int main()
     std::vector<int> IntCodes = initAmp.GetIntcode();
     int max_output = 0;
 
-    for(int i = 1234; i <= 43210; i++) {
+    for(int i = 56789; i <= 99999; i++) {
         if(!IsPhaseSettingValid(i)) continue;
         std::string phase = Make5Digit(std::to_string(i));
         std::vector<Amplifier*> amplifiers;
@@ -46,7 +47,7 @@ int main()
         amplifiers.push_back(new Amplifier("C", phase[2]-'0', IntCodes, amplifiers.back()));
         amplifiers.push_back(new Amplifier("B", phase[1]-'0', IntCodes, amplifiers.back()));
         amplifiers.push_back(new Amplifier("A", phase[0]-'0', IntCodes, amplifiers.back()));
-        //amplifiers.front()->SetNextModule(amplifiers.back());
+        amplifiers.front()->SetNextModule(amplifiers.back());
 
         for(Amplifier* amp : amplifiers) {
             amp->StartProgram();

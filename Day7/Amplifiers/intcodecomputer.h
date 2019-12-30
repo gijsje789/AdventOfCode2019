@@ -21,10 +21,10 @@ public:
     void WaitForProgramFinished(void);
     std::vector<int> GetIntcode(void);
     void SetIntcode(std::vector<int> _intCodes);
+    void ResetProgram(void);
 
 protected:
     std::string Name;
-    bool OutputReady;
 
     virtual int GetInput(void);
     virtual void SetOutput(int val);

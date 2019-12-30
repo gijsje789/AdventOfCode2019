@@ -57,6 +57,11 @@ void IntcodeComputer::SetIntcode(std::vector<int> _intCodes)
     IntCodes = _intCodes;
 }
 
+void IntcodeComputer::ResetProgram()
+{
+    CurrentInstruction = 0;
+}
+
 void IntcodeComputer::IntcodeProgram(void)
 {
     while(ExecuteCurrentInstruction()) {

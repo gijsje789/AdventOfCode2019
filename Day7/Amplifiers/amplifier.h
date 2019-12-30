@@ -13,6 +13,7 @@ public:
     void GiveInput(int val);
     void SetNextModule(Amplifier* _nextModule);
     int GetOutput(void);
+    void SetPhase(int _phase);
 private:
     bool PhaseSet = false;
     int Phase;

@@ -33,6 +33,11 @@ int Amplifier::GetOutput()
     return InputOutput;
 }
 
+void Amplifier::SetPhase(int _phase)
+{
+    Phase = _phase;
+}
+
 int Amplifier::GetInput()
 {
     if(PhaseSet) {
